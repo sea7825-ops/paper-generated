@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Methane sensing papers: how each system works</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet"><style id="css">
+:root{
+  --paper:#EDF1F3;--surface:#FFFFFF;--ink:#17263A;--muted:#55657A;--rule:#C8D2DB;
+  --laser:#C42F3B;--gas:#6A4BC4;--accent:#1D6E77;--mark:#FBF0CF;--flag:#8A5A00;
+  --serif:"Instrument Serif",Georgia,"Times New Roman",serif;
+  --sans:"Instrument Sans",system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  color-scheme:light;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --paper:#0E1621;--surface:#162130;--ink:#E3EAF1;--muted:#9AA9BA;--rule:#2A394C;
+  --laser:#FF6C75;--gas:#A68DFF;--accent:#5EC4CD;--mark:#3A3320;--flag:#E8B65A;color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --paper:#0E1621;--surface:#162130;--ink:#E3EAF1;--muted:#9AA9BA;--rule:#2A394C;
+  --laser:#FF6C75;--gas:#A68DFF;--accent:#5EC4CD;--mark:#3A3320;--flag:#E8B65A;color-scheme:dark;}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px);scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.55 var(--sans)}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+a{color:var(--accent)}
+.wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+header.top{padding:56px 0 28px}
+h1{font:400 clamp(2.2rem,5vw,3.6rem)/1.04 var(--serif);margin:0 0 16px;max-width:17ch;letter-spacing:-.01em}
+.lede{max-width:62ch;color:var(--muted);margin:0}
+h2{font:400 2rem/1.15 var(--serif);margin:0 0 6px}
+h2+p{color:var(--muted);margin:0 0 22px;max-width:64ch}
+section.block{padding:44px 0;border-top:1px solid var(--rule)}
+
+/* encoding axis */
+.axis{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;margin-top:8px}
+.axis::before{content:"";position:absolute;left:0;right:0;top:15px;height:2px;background:linear-gradient(90deg,var(--laser),var(--gas))}
+.stop{padding:0 14px 0 0}
+.stop .dot{width:14px;height:14px;border-radius:50%;background:var(--surface);border:2px solid var(--ink);margin:8px 0 14px;position:relative}
+.stop h3{font:600 1rem/1.3 var(--sans);margin:0 0 4px}
+.stop p{font-size:.88rem;color:var(--muted);margin:0 0 12px;max-width:26ch}
+.chips{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.chip{font-size:.85rem;text-decoration:none;color:var(--ink);background:var(--surface);border:1px solid var(--rule);padding:3px 10px;border-radius:999px}
+.chip:hover,.chip:focus-visible{border-color:var(--ink)}
+.chip.ours{background:var(--mark);border-color:var(--flag);color:var(--ink)}
+@media (max-width:760px){
+  .axis{grid-template-columns:1fr;gap:18px}
+  .axis::before{left:6px;right:auto;top:0;bottom:0;width:2px;height:auto;background:linear-gradient(180deg,var(--laser),var(--gas))}
+  .stop{padding-left:28px;position:relative}
+  .stop .dot{position:absolute;left:0;top:-2px;margin:0}
+}
+
+/* units */
+.units{display:grid;grid-template-columns:repeat(3,1fr);gap:28px}
+.unit .glyph{font:400 3.1rem/1 var(--serif);color:var(--accent);margin-bottom:8px}
+.unit h3{font:600 1rem var(--sans);margin:0 0 6px}
+.unit p{margin:0 0 8px;font-size:.94rem}
+.unit .eg{color:var(--muted);font-size:.88rem}
+.callout{margin-top:28px;padding:16px 18px;border-left:3px solid var(--flag);background:var(--surface);max-width:78ch}
+.callout p{margin:0 0 8px}.callout p:last-child{margin:0}
+.formula{font:400 1.25rem var(--serif);white-space:nowrap}
+@media (max-width:760px){.units{grid-template-columns:1fr}}
+
+/* table */
+.tools{display:flex;gap:10px;flex-wrap:wrap;margin:0 0 14px;align-items:center}
+button{font:500 .9rem var(--sans);color:var(--ink);background:var(--surface);border:1px solid var(--ink);border-radius:6px;padding:7px 14px;cursor:pointer}
+button.primary{background:var(--ink);color:var(--paper)}
+button:focus-visible,[contenteditable]:focus-visible,.chip:focus-visible,a:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+.hint{font-size:.85rem;color:var(--muted)}
+.tablewrap{overflow-x:auto;background:var(--surface);border:1px solid var(--rule);border-radius:4px}
+table{border-collapse:collapse;min-width:1560px;width:100%;font-size:.88rem}
+th,td{text-align:left;vertical-align:top;padding:10px 12px;border-bottom:1px solid var(--rule)}
+thead th{font-weight:600;background:var(--paper);position:sticky;top:0}
+tbody th{font-weight:600;white-space:nowrap}
+tbody th a{color:var(--ink)}
+td[contenteditable]{white-space:pre-wrap;min-width:110px}
+td[contenteditable]:hover{background:var(--paper)}
+tr:last-child td,tr:last-child th{border-bottom:0}
+
+/* patterns */
+.patterns{display:grid;grid-template-columns:repeat(2,1fr);gap:22px 36px}
+.patterns h3{font:600 1rem var(--sans);margin:0 0 4px}
+.patterns p{margin:0;font-size:.94rem;max-width:56ch}
+.patterns .src{color:var(--muted);font-size:.84rem;margin-top:4px}
+@media (max-width:760px){.patterns{grid-template-columns:1fr}}
+
+/* papers */
+.paper{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:34px;padding:38px 0;border-top:1px solid var(--rule)}
+.plate{margin:0;background:var(--surface);border:1px solid var(--rule);border-radius:4px;padding:14px;align-self:start}
+.plate h5{font:600 .86rem var(--sans);margin:18px 0 6px}.plate h5:first-child{margin-top:0}
+.scandesc{font-size:.85rem;color:var(--muted);margin:6px 0 0}
+.plats{display:grid;gap:8px;margin-top:10px}
+.plat{border:1px solid var(--rule);border-radius:4px;padding:8px 10px;background:var(--paper)}
+.plat.has{border:1.5px solid var(--laser)}
+.plat-h{font-weight:600;font-size:.88rem}
+.tag{font-weight:500;font-size:.72rem;color:var(--laser);border:1px solid var(--laser);border-radius:999px;padding:0 7px;margin-left:4px;white-space:nowrap}
+.plat ul{margin:6px 0 0;padding-left:18px;font-size:.84rem}
+.plat li.s{font-weight:600;color:var(--laser)}
+.flow{margin:6px 0 0;padding-left:22px;font-size:.85rem}
+.plate svg{width:100%;height:auto;display:block}
+.plate figcaption{font-size:.78rem;color:var(--muted);margin-top:6px}
+.paper h3{font:400 1.75rem/1.15 var(--serif);margin:0 0 4px}
+.cite{font-size:.88rem;color:var(--muted);margin:0 0 16px}
+.paper h4{font:600 .95rem var(--sans);margin:20px 0 6px}
+.paper [contenteditable]{white-space:pre-wrap;border-radius:3px}
+.paper [contenteditable]:hover{background:var(--surface)}
+.how{margin:0;max-width:62ch}
+dl.nums{display:grid;grid-template-columns:auto 1fr;gap:6px 18px;margin:16px 0 0;font-size:.9rem;max-width:62ch}
+dl.nums dt{color:var(--muted)}dl.nums dd{margin:0;font-weight:500}
+.rel{margin:0;max-width:62ch;padding:12px 14px;background:var(--mark);border-radius:3px}
+.notes{min-height:3.2em;padding:10px 12px;border:1px dashed var(--rule);border-radius:3px;max-width:62ch;background:var(--surface)}
+.notes:empty::before{content:attr(data-placeholder);color:var(--muted)}
+.flag{font-size:.85rem;color:var(--flag);margin:14px 0 0}
+@media (max-width:860px){.paper{grid-template-columns:1fr}}
+
+/* svg figures */
+.fig .box{fill:var(--surface);stroke:var(--ink);stroke-width:1.4}
+.fig .ln{stroke:var(--ink);stroke-width:1.4;fill:none}
+.fig .thin{stroke:var(--muted);stroke-width:1;fill:none}
+.fig .dots{stroke:var(--muted);stroke-width:1.2;fill:none;stroke-dasharray:2 4}
+.fig .ink{fill:var(--ink)}
+.fig .laser{stroke:var(--laser);stroke-width:2;fill:none}
+.fig .ret{stroke:var(--laser);stroke-width:1.3;stroke-dasharray:5 3;fill:none;opacity:.75}
+.fig g.gas{opacity:.32}.fig g.gas circle,.fig .gasfill{fill:var(--gas)}
+.fig .target{fill:var(--rule);stroke:var(--muted);stroke-width:1}
+.fig .lbl{font:11px var(--sans);fill:var(--muted)}
+.fig .led{fill:var(--laser)}
+
+/* save bar */
+.savebar{position:fixed;left:0;right:0;bottom:0;background:var(--ink);color:var(--paper);padding:12px 22px calc(12px + env(safe-area-inset-bottom,0px));display:none;z-index:5}
+.savebar.on{display:block}
+.savebar .in{max-width:1120px;margin:0 auto;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.savebar span{flex:1;min-width:200px;font-size:.92rem}
+.savebar button{border-color:var(--paper);background:transparent;color:var(--paper)}
+.savebar button.primary{background:var(--paper);color:var(--ink)}
+.status{font-size:.85rem;color:var(--muted);min-height:1.3em}
+footer{padding:30px 0 80px;color:var(--muted);font-size:.85rem;border-top:1px solid var(--rule)}
+</style></head><body><div id="app"></div><script type="application/json" id="state">{"savedAt": 0, "papers": [{"id": "gibson2017", "short": "Gibson et al. 2017", "group": "patterns", "title": "Real-time imaging of methane gas leaks using a single-pixel camera", "venue": "Optics Express 25(4), 2998", "link": "https://doi.org/10.1364/OE.25.002998", "dataLink": "https://doi.org/10.5525/gla.researchdata.375", "technique": "Single-pixel camera: a DMD projects Hadamard patterns, one InGaAs photodiode records the echo; laser switched on and off the 1.651 µm methane line", "gas": "Methane", "scenario": "Indoor lab, fixed setup", "range": "~1 m; 16×16 pixels at ~25 fps", "validation": "Gas cells (0/25/50/100%), controlled leak 0.1–5 L/min, nitrogen leak as negative control", "data": "Yes (Glasgow repository)", "illum": "Yes, active: 1.651 µm laser projected through a DMD (~5 mW)", "specref": "Yes: laser switched on and off the absorption line; the off-line image is the background", "output": "2D image (16×16 px) overlaid on a color camera view; live video at ~25 fps", "takeaway": "Same architecture as ours; on/off-line background removal", "how": "A laser tuned to a methane absorption line lights the scene through a DMD that shows one Hadamard pattern at a time. One photodiode records the total backscattered light for each pattern, and the image is rebuilt from those numbers. Alternating the laser on and off the absorption line gives a methane image and a background image; their difference isolates methane.", "nums": [["Patterns per 16×16 image", "256"], ["Pattern rate", "20 kHz (DMD)"], ["Smallest leak imaged", "~0.2 L/min at ~1 m"], ["Illumination", "~5 mW"]], "relevance": "Closest match to our sensor. Their background trick (on/off line) and their validation set (known gas cells plus a nitrogen control) are both directly reusable. Their scene used IR-reflective tape behind the gas, so ordinary outdoor backgrounds remain untested.", "notes": "", "verify": false, "system": {"scan": {"type": "patterns", "desc": "No mechanical scan. The DMD swaps Hadamard patterns 20,000 times a second; 256 patterns make one 16×16 image of a fixed field of view."}, "mount": "One fixed unit. Nothing moves except the micromirrors inside the DMD.", "platforms": [{"name": "Fixed imaging head", "sensor": true, "parts": ["Laser, 1.651 µm, switched on and off the methane line", "DMD: displays Hadamard patterns", "Projection lens: casts the patterns onto the scene", "*InGaAs photodiode: one number per pattern", "Color camera: context image for the overlay"]}, {"name": "Data acquisition + PC", "sensor": false, "parts": ["DAQ synchronized with the DMD", "Rebuilds the image; subtracts the off-line image"]}], "flow": ["Laser lights the scene through one pattern", "Photodiode records the total backscattered light", "Repeat for all 256 patterns", "PC rebuilds on-line and off-line images", "Difference = methane, overlaid on the color image"]}}, {"id": "wangx2026", "short": "Wang X. et al. 2026", "group": "mech", "title": "Dynamic Imaging and Inverse Quantification Method of Methane Gas Cloud with Laser Scanning Technology", "venue": "Environmental Science & Technology 60(14), 10688–10703", "link": "https://doi.org/10.1021/acs.est.5c16972", "dataLink": "", "technique": "Coaxial TDLAS (1653 nm DFB laser) on a 2D pan-tilt unit; sealed reference cell locks the wavelength", "gas": "Methane", "scenario": "Indoor windless tests on a white screen; outdoor and gas-station tests in the supplement", "range": "0.1 g/s imaged at 101 m with wind ≤ 2 m/s (supplement)", "validation": "Gas bags with occlusion strips (width error \u003c 3.6%); leaks 1–5 L/min; blind test; leak-rate fit R² = 0.9795 at 0.3 m", "data": "No (supplement figures only)", "illum": "Yes, active: 15 mW 1653 nm DFB laser; echo from natural surfaces", "specref": "Yes: sealed 1 cm methane reference cell locks the laser to the absorption peak", "output": "2D ppm·m pseudocolor map of the plume, built row by row (~60 s per image); leak-rate curves", "takeaway": "Correct the scan time lag; adapt scan speed; wind is needed for leak rate", "how": "A single TDLAS beam measures path-integrated methane along one line. The pan-tilt unit sweeps that beam across the scene to build an image. Light backscatters from a natural surface and returns along the same path (coaxial) to a 3-inch lens and photodiode. A sealed methane reference cell keeps the laser locked on the absorption peak. Leak rate comes from flux: estimated wind speed times the image summed across a cross-section of the plume.", "nums": [["Time per data point", "~20 ms (8,800 laser shots)"], ["Measured scan lag", "τ = 0.0252 s; angle error θ = τ·v"], ["Default scan", "3°/s, ~60 s per image"], ["Pan-tilt repeatability", "±0.004°, 2 kHz feedback"], ["Best cross-section for leak rate", "0.2–0.4 m downstream of the source"], ["Unit conversion", "1 L/min ≈ 0.011 g/s"]], "relevance": "Answers three of our open questions. Scanning creates an angle lag that grows with speed and flips direction on each row, so data must be corrected. A fast-screen, slow-fine adaptive speed rule is a simple baseline scan policy. Leak rate needs wind, and they used simulated wind rather than measured wind. Their white screen removed background variation, which a field setting will not have.", "notes": "", "verify": false, "system": {"scan": {"type": "serpentine", "desc": "Pan sweeps each row continuously and reverses on the next row (S-shaped path); tilt steps between rows. About 3°/s, ~60 s per image. Fast screening when nothing is found, slow dense scanning once methane appears."}, "mount": "Sensor and pan-tilt are one unit: the whole telemetry module rotates on the pan-tilt. The PC is separate and cabled.", "platforms": [{"name": "Telemetry module on a 2D pan-tilt unit", "sensor": true, "parts": ["DFB laser, 1653 nm, with temperature control", "Beam splitter, reference cell and PD1: lock the wavelength", "Coaxial optics: mirror, filter, 3-inch lens", "*PD2 InGaAs photodiode: backscattered echo", "Microcontroller: spectrum to ppm·m every ~20 ms", "Pan-tilt: pan 0–360°, tilt ±40°, ±0.004°"]}, {"name": "PC", "sensor": false, "parts": ["Sends angle commands, reads actual angles", "Lag correction, image, leak rate"]}], "flow": ["PC commands pan-tilt angles", "Module measures ppm·m while moving", "Each reading is tagged with its angle", "Correct the angle lag (τ = 25 ms), opposite on alternate rows", "Image × simulated wind → leak rate"]}}, {"id": "wangs2025", "short": "Wang S. et al. 2025", "group": "mech", "title": "Active methane gas imaging and leakage quantification based on standoff TDLAS and pan-tilt units", "venue": "Sensors and Actuators B 436 (2025)", "link": "https://www.sciencedirect.com/science/article/abs/pii/S0925400525004733", "dataLink": "", "technique": "Off-axis standoff TDLAS on a pan-tilt unit; methane map overlaid on a visible-camera image", "gas": "Methane", "scenario": "Natural gas industry", "range": "Up to ~10 m (as described by Wang X. et al. 2026)", "validation": "Calibrated gas bags and controlled releases; mass-balance leak rate with wind speed", "data": "To be verified", "illum": "Yes, active: TDLAS laser", "specref": "TDLAS wavelength scan across the line (reference details to verify)", "output": "2D ppm·m map overlaid on a visible image (near-infrared + visible composite), plus leak rate", "takeaway": "Closest to our loop: scan, image, quantify, with an RGB overlay", "how": "The same idea as the 2026 system, one beam swept by a pan-tilt unit, but outgoing and returning light use separate paths (off-axis). That returns less light, so a large collecting lens is needed. The methane map is overlaid on a visible image, and a mass-balance step turns the map plus wind speed into a leak rate.", "nums": [["Optical layout", "Off-axis transmit and receive"], ["Output", "Near-infrared + visible composite, leak rate"]], "relevance": "Shows how to pair a methane map with an ordinary camera image, the role our RGB pan/tilt demo could play. Read the full paper for its detection limit and data.", "notes": "", "verify": true, "system": {"scan": {"type": "serpentine", "desc": "The pan-tilt scans a chosen field of view point by point to build the image (exact path and speed to verify)."}, "mount": "Sensor, collecting lens and visible camera ride together on the pan-tilt.", "platforms": [{"name": "Off-axis TDLAS head on a pan-tilt", "sensor": true, "parts": ["TDLAS laser: outgoing beam", "*Large collecting lens + photodetector: return path", "Visible camera: background image", "Pan-tilt: points the head"]}, {"name": "Wind data + computer", "sensor": false, "parts": ["Wind speed input", "Composite image and mass-balance leak rate"]}], "flow": ["Scan the field of view with the pan-tilt", "Read ppm·m at each angle", "Overlay on the visible image", "Map + wind speed → leak rate"]}}, {"id": "schaab2026", "short": "Schaab et al. 2026", "group": "mech", "title": "Visual Cooperative Drone Tracking for Open-Path Gas Measurements", "venue": "arXiv 2602.20768", "link": "https://arxiv.org/abs/2602.20768", "dataLink": "", "technique": "Open-path TDLAS (2.05 µm) on a ground pan-tilt unit; a drone carries the reflector; a camera tracks the drone's LEDs", "gas": "CO₂ (adaptable to methane)", "scenario": "Outdoor field, data collection for gas tomography", "range": "Valid up to 60 m", "validation": "Zig-zag tracking flights; CO₂ release of 25 L/min at 16 m", "data": "No", "illum": "Yes, active: laser aimed at a drone-carried reflector, not a natural background", "specref": "TDLAS wavelength scan across the CO₂ line", "output": "Line readings (ppm·m per beam path) for later tomography; no image", "takeaway": "Pan-tilt specs; timing and status-code logging", "how": "The laser sits on the ground and points at a reflector carried by a drone. A zoom camera finds the drone's red LEDs (filtered in HSV color space) and the pan-tilt unit keeps the beam on the reflector, helped by GNSS. As the drone flies a planned route, each beam cuts through the plume at a different angle, which is the raw material for tomography.", "nums": [["Pan-tilt unit", "FLIR PTU-D38E, 0.006° / 0.003°"], ["Sensor accuracy", "\u003c 1 ppm at 50 m (40 ppm·m)"], ["Test release", "CO₂, 25 L/min, 16 m from sensor"]], "relevance": "A hardware reference: how a pan-tilt unit is commanded (serial position and speed) and how each reading is logged with a status code. It does not propose a scan policy; the drone route is preplanned.", "notes": "", "verify": false, "system": {"scan": {"type": "route", "desc": "The drone flies a preplanned zig-zag route. The pan-tilt does not scan on its own; it follows the drone, so each beam crosses the plume at a new angle."}, "mount": "Separate. The sensor stays on the ground pan-tilt; the drone carries only the reflector and LEDs.", "platforms": [{"name": "Ground station on a pan-tilt (FLIR PTU-D38E)", "sensor": true, "parts": ["*Open-path TDLAS, 2.05 µm", "Zoom camera: finds the drone's red LEDs (HSV filter)", "Pan-tilt: keeps the beam on the reflector", "Controller: camera + GNSS tracking"]}, {"name": "Drone", "sensor": false, "parts": ["Retroreflector: sends the beam back", "Red LEDs: visual target", "GNSS: position for tracking"]}], "flow": ["Drone flies to the next waypoint", "Camera finds the LEDs; pan-tilt re-aims", "TDLAS reads ppm·m along the beam", "A status code marks each reading valid or not", "Many beams → tomography (later)"]}}, {"id": "jia2024", "short": "Jia et al. 2024", "group": "mech", "title": "A methane leak source detection system based on laser remote sensing", "venue": "Journal of Henan Normal University (Natural Science) 52(4), 57–62", "link": "https://doi.org/10.16366/j.cnki.1000-2367.2023.09.24.0002", "dataLink": "", "technique": "UAV-mounted TDLAS (1653.7 nm), Cassegrain transmit-receive optics, 160 g", "gas": "Methane", "scenario": "Search test on a 105 × 70 m field", "range": "Up to 50 m; 10 ppm·m sensitivity", "validation": "Standard gas 1% and 3% at 10 m and 25 m (error \u003c 3.7%); 1% methane gas bag search", "data": "No", "illum": "Yes, active: 1653.7 nm DFB laser; echo from the ground", "specref": "TDLAS modulation and demodulation on a microcontroller; checked with standard gas", "output": "Readings tagged to GPS, shown as a color-coded map of the search field", "takeaway": "Z-shaped search baseline; calibration procedure", "how": "A small TDLAS points down from a quadcopter and measures methane along the beam to the ground. The drone flies a Z-shaped route at 25–30 m altitude; readings are tagged with GPS, averaged every 0.5 s and sent to a ground laptop. The highest values on the grid mark the leak.", "nums": [["Flight", "3.5 m/s at 25–30 m altitude"], ["Sampling", "10 Hz, averaged over 0.5 s"], ["Reported detection rate", "> 95%"], ["Calibration check", "1% × 70 mm = 700 ppm·m"]], "relevance": "A simple non-adaptive baseline: cover everything in a fixed zig-zag, then pick the peaks. Any adaptive scan policy we design should beat it. Targets were static gas bags, so plume motion and wind were not tested.", "notes": "", "verify": false, "system": {"scan": {"type": "zigzag", "desc": "No pan-tilt. The drone's flight path is the scan: a Z-shaped route over a 105 × 70 m field at 25–30 m altitude and 3.5 m/s, with the sensor looking straight down."}, "mount": "Sensor rides on the drone. The laptop on the ground is separate (radio link).", "platforms": [{"name": "Quadcopter", "sensor": true, "parts": ["*TDLAS remote detector, 160 g, looking down", "Flight controller (ArduPilot) + GPS", "433 MHz radio"]}, {"name": "Ground laptop", "sensor": false, "parts": ["LabVIEW: receive, display, store", "Color-coded map; alarm on detection"]}], "flow": ["Drone flies the Z route", "Reads ppm·m to the ground at 10 Hz", "Averages every 0.5 s and tags GPS", "Sends readings to the laptop", "Peak values mark the leak"]}}, {"id": "bennetts2014", "short": "Bennetts et al. 2014", "group": "mech", "title": "Robot assisted gas tomography: localizing methane leaks in outdoor environments", "venue": "IEEE ICRA 2014", "link": "", "dataLink": "", "technique": "Mobile robot with a remote methane sensor on a pan-tilt unit; gas tomography", "gas": "Methane", "scenario": "Outdoor leak localization", "range": "To be verified", "validation": "Outdoor experiments (details to verify)", "data": "To be verified", "illum": "Yes, active: remote laser methane detector", "specref": "TDLAS (details to verify)", "output": "Many line readings combined by tomography into a 2D concentration map", "takeaway": "Models both the mean and the fluctuation of the gas distribution", "how": "The robot measures many beam paths through the same area from different positions and angles. Tomography combines those line measurements into a 2D map of where the gas is, the same way a CT scanner combines X-ray paths.", "nums": [["Beam model", "Cone-shaped beam"], ["Map", "Mean and fluctuation of concentration"]], "relevance": "Shows how to turn ppm·m line measurements into a map of where gas actually sits, and treats plume fluctuation as part of the model rather than noise.", "notes": "", "verify": true, "system": {"scan": {"type": "poses", "desc": "Stop, sweep, move: at each stop the pan-tilt sweeps beams in a fan, then the robot drives to a new pose. Crossing beams feed tomography."}, "mount": "Pan-tilt and sensor ride together on the robot.", "platforms": [{"name": "Mobile robot", "sensor": true, "parts": ["*Remote laser methane detector on a pan-tilt", "Wheeled base: moves between poses", "Pose tracking for every beam"]}, {"name": "Computer", "sensor": false, "parts": ["Tomography: line readings to a 2D map"]}], "flow": ["Drive to a pose", "Sweep beams", "Log beam geometry + ppm·m", "Repeat at new poses", "Reconstruct the map"]}}, {"id": "aps2024", "short": "Acta Physica Sinica 2024", "group": "optics", "title": "TDLAS imaging with dual-wedge scanning mirrors (exact title to verify)", "venue": "Acta Physica Sinica 73 (2024)", "link": "https://doi.org/10.7498/aps.73.20231906", "dataLink": "", "technique": "TDLAS with two rotating wedge mirrors that steer the beam", "gas": "Methane", "scenario": "Leak imaging with standard gas bags", "range": "\u003c 500 ppm·m detection limit; \u003c 6 cm position resolution", "validation": "Standard gas bags", "data": "To be verified", "illum": "Yes, active: TDLAS laser", "specref": "TDLAS (details to verify)", "output": "2D image of the gas target from the wedge scan pattern", "takeaway": "Scan step adjusted to measurement distance", "how": "Instead of rotating the whole sensor, two wedge-shaped optics spin in front of the laser and bend the beam into a pattern across the scene. Point measurement becomes area measurement without moving the sensor head.", "nums": [["Detection limit", "\u003c 500 ppm·m"], ["Position resolution", "\u003c 6 cm"]], "relevance": "Another way to steer one beam. Adjusting the step to the distance is a simple rule worth copying for our grid resolution.", "notes": "", "verify": true, "system": {"scan": {"type": "rose", "desc": "Two wedge mirrors spin in front of the laser; the beam traces a looping pattern over the target. Step size is set by distance."}, "mount": "One fixed unit; only the wedges rotate.", "platforms": [{"name": "TDLAS head with wedge scanner", "sensor": true, "parts": ["TDLAS laser", "*Detector for the returning beam", "Two rotating wedge mirrors: steer the beam"]}, {"name": "Computer", "sensor": false, "parts": ["Builds the image from beam positions"]}], "flow": ["Wedges rotate", "Beam lands on a new spot", "ppm·m reading", "Image from all spots"]}}, {"id": "titchener2022", "short": "Titchener et al. 2022", "group": "optics", "title": "Single photon Lidar gas imagers for practical and widespread continuous methane monitoring", "venue": "Applied Energy 306, 118086", "link": "", "dataLink": "", "technique": "TD-Lidar: TDLAS plus single-photon counting, coaxial optics, double-wedge scanner", "gas": "Methane", "scenario": "Continuous monitoring", "range": "0.1 g/s imaged at up to 90 m", "validation": "To be verified", "data": "To be verified", "illum": "Yes, active: laser lidar with single-photon detection", "specref": "TDLAS (details to verify)", "output": "2D plume image at long range", "takeaway": "Long range; field of view fixed by the wedge angle", "how": "Counting individual returning photons lets a weak echo from far away still be measured. A pair of wedges steers the beam; the field of view is set by the wedge angle, so changing it for different distances is awkward. Summary taken from the introduction of Wang X. et al. 2026.", "nums": [["Range", "Up to 90 m"], ["Smallest leak imaged", "0.1 g/s"]], "relevance": "Shows what long range costs: very sensitive detection and a fixed field of view. Useful if our scenes turn out to be far away.", "notes": "", "verify": true, "system": {"scan": {"type": "rose", "desc": "A double-wedge scanner steers the beam; the field of view is fixed by the wedge angle."}, "mount": "One fixed lidar head.", "platforms": [{"name": "Lidar head", "sensor": true, "parts": ["TDLAS laser", "*Single-photon detector", "Double-wedge scanner", "Coaxial optics"]}], "flow": ["Steer the beam", "Count returning photons", "ppm·m per direction", "Long-range plume image"]}}, {"id": "agogino2024", "short": "Agogino et al. 2024", "group": "array", "title": "Methane Detection and Characterization with AI Sensor Fusion and Decision-Analytic Placement of Rapidly Deployable Sensors", "venue": "ASME IMECE2024-145130", "link": "", "dataLink": "", "technique": "Infrared camera video (OGI) + Vision Transformer; simulated contact sensor; Bayesian fusion; expected value of information", "gas": "Methane", "scenario": "Oil & gas equipment at METEC (GasVid dataset)", "range": "Camera at 4.6–18.6 m", "validation": "Train on pad 2, test on pad 1; accuracy falls from 1.0 to 0.57 with distance", "data": "Yes (GasVid)", "illum": "No, passive: infrared camera relies on thermal contrast with the background", "specref": "None: one broadband infrared band", "output": "Video frames classified as leak or no leak; no concentration map", "takeaway": "Decision framework: when and where an extra measurement is worth it", "how": "Infrared camera video is classified leak or no leak by a Vision Transformer. Because accuracy drops with distance, the paper simulates dropping a cheap contact sensor near the equipment, fuses both readings with Bayes' rule, and uses expected value of information to decide whether the extra sensor is worth its cost.", "nums": [["Overall accuracy", "0.83"], ["Accuracy at 18.6 m", "0.57"], ["Prior P(leak)", "7/8 (from the test set)"]], "relevance": "The foundation for our project. Its expected-value-of-information logic can score our scan actions. The contact sensor is simulated, so real fused data is still missing.", "notes": "", "verify": false, "system": {"scan": {"type": "fixed", "desc": "No scan. The infrared camera watches a fixed view; extra spatial information comes from where a contact sensor is dropped, chosen by expected value of information."}, "mount": "Separate. A fixed camera; a drone delivers a contact sensor (simulated in this paper).", "platforms": [{"name": "Fixed infrared camera (OGI)", "sensor": true, "parts": ["*Infrared camera video (GasVid)"]}, {"name": "Drone (proposed)", "sensor": false, "parts": ["Drops a contact sensor near equipment"]}, {"name": "Contact sensor (simulated)", "sensor": true, "parts": ["*LEL reading at the drop point"]}, {"name": "Computer", "sensor": false, "parts": ["ViT: leak or no leak", "Bayes fusion + EVSI: drop? repair?"]}], "flow": ["Camera video → ViT leak probability", "Is a sensor drop worth it? (EVSI)", "Drop a sensor, read LEL (simulated)", "Fuse with Bayes' rule", "Decide on repair"]}}]}</script><script id="main">
+(function(){
+var HEAD='<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Methane sensing papers: how each system works</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet">';
+var KEY='methane-paper-atlas-v1';
+var state=JSON.parse(document.getElementById('state').textContent);
+var saved=JSON.stringify(state);
+var artifactNs=null,dirty=false,localNote='';
+try{var d=localStorage.getItem(KEY);if(d){var p=JSON.parse(d);if(p&&p.savedAt>(state.savedAt||0)){state=p;localNote='Showing edits saved in this browser.';}}}catch(e){}
+
+function esc(s){return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function cloud(cx,cy,s){return '<g class="gas"><circle cx="'+cx+'" cy="'+cy+'" r="'+(15*s)+'"/><circle cx="'+(cx+13*s)+'" cy="'+(cy-9*s)+'" r="'+(12*s)+'"/><circle cx="'+(cx-12*s)+'" cy="'+(cy-7*s)+'" r="'+(11*s)+'"/><circle cx="'+(cx+3*s)+'" cy="'+(cy-21*s)+'" r="'+(10*s)+'"/><circle cx="'+(cx-2*s)+'" cy="'+(cy-36*s)+'" r="'+(8*s)+'"/></g>';}
+function ptu(x,y){return '<rect class="box" x="'+(x-22)+'" y="'+y+'" width="44" height="9" rx="2"/><path class="ln" d="M'+x+' '+y+' V'+(y-14)+'"/><path class="thin" d="M'+(x-30)+' '+(y+16)+' q30 10 60 0"/><path class="thin" d="M'+(x+27)+' '+(y+13)+' l4 3 l-5 2"/><text class="lbl" x="'+(x+36)+'" y="'+(y+22)+'">pan</text>';}
+function drone(x,y){return '<rect class="box" x="'+(x-12)+'" y="'+(y-4)+'" width="24" height="8" rx="2"/><path class="ln" d="M'+(x-12)+' '+y+' H'+(x-26)+' M'+(x+12)+' '+y+' H'+(x+26)+'"/><ellipse class="thin" cx="'+(x-26)+'" cy="'+(y-4)+'" rx="11" ry="2.5"/><ellipse class="thin" cx="'+(x+26)+'" cy="'+(y-4)+'" rx="11" ry="2.5"/>';}
+function rose(cx,cy,R){var s='';for(var i=0;i<=120;i++){var t=i/120*Math.PI*2,r=R*Math.cos(3*t);s+=(i?'L':'M')+(cx+r*Math.cos(t)).toFixed(1)+' '+(cy+r*Math.sin(t)).toFixed(1);}return s;}
+function svg(label,body){return '<svg class="fig" viewBox="0 0 360 210" role="img" aria-label="'+esc(label)+'">'+body+'</svg>';}
+
+function chev(x,y,dir){return '<path class="ln" d="M'+(x-3*dir)+' '+(y-4)+' L'+(x+3*dir)+' '+y+' L'+(x-3*dir)+' '+(y+4)+'"/>';}
+function scanSVG(type){var b='';
+ if(type==='serpentine'){b='<path class="thin" d="M40 14 V128 H290"/><text class="lbl" x="250" y="144">pan</text><text class="lbl" x="6" y="22">tilt</text><path class="laser" d="M60 30 H270 V56 H60 V82 H270 V108 H60"/>'+chev(165,30,1)+chev(165,56,-1)+chev(165,82,1)+chev(165,108,-1)+'<circle class="ink" cx="60" cy="30" r="3"/><text class="lbl" x="64" y="22">start</text>';}
+ else if(type==='patterns'){var pats=[[1,0,1,0,0,1,0,1,1,0,1,0,0,1,0,1],[1,1,0,0,1,1,0,0,0,0,1,1,0,0,1,1],[1,1,1,1,0,0,0,0,1,1,1,1,0,0,0,0],[1,0,0,1,0,1,1,0,1,0,0,1,0,1,1,0]];
+  pats.forEach(function(pt,k){for(var i=0;i<16;i++){b+='<rect x="'+(14+k*40+(i%4)*7)+'" y="'+(46+Math.floor(i/4)*7)+'" width="7" height="7" class="'+(pt[i]?'ink':'box')+'" stroke-width=".5"/>';}});
+  b+='<text class="lbl" x="14" y="36">patterns change on the DMD</text><text class="lbl" x="174" y="62">…</text><path class="ln" d="M190 60 H214"/>'+chev(214,60,1);
+  for(var i=0;i<36;i++){var x=i%6,y=Math.floor(i/6),g=(x>=2&&x<=4&&y>=1&&y<=4)||(x===3&&y===0);b+='<rect x="'+(226+x*10)+'" y="'+(30+y*10)+'" width="10" height="10" class="'+(g?'gasfill':'box')+'" stroke-width=".5" '+(g?'opacity=".7"':'')+'/>';}
+  b+='<text class="lbl" x="222" y="106">rebuilt image</text><text class="lbl" x="14" y="128">Fixed view: no pan-tilt, no route</text>';}
+ else if(type==='route'){b='<rect class="box" x="24" y="110" width="30" height="18" rx="3"/><text class="lbl" x="8" y="144">Ground pan-tilt + sensor</text><path class="dots" d="M140 30 L280 44 L150 62 L280 78 L160 96"/><text class="lbl" x="196" y="22">drone route (preplanned)</text>'+
+  '<path class="laser" d="M54 114 L280 44 M54 116 L150 62 M54 118 L280 78" stroke-width="1.4"/>'+cloud(210,120,.55)+'<circle class="target" cx="280" cy="44" r="4"/><circle class="target" cx="150" cy="62" r="4"/><circle class="target" cx="280" cy="78" r="4"/><text class="lbl" x="180" y="142">beam follows the drone</text>';}
+ else if(type==='zigzag'){b='<polygon class="box" points="30,134 290,134 266,24 54,24"/><path class="laser" d="M70 36 H250 L72 62 H254 L74 88 H258 L76 114 H262" stroke-width="1.4"/>'+chev(160,36,1)+chev(160,62,1)+chev(160,88,1)+chev(160,114,1)+'<ellipse class="gasfill" cx="196" cy="100" rx="14" ry="6" opacity=".55"/><circle class="ink" cx="70" cy="36" r="3"/><text class="lbl" x="34" y="16">Z route over the field (top view)</text><text class="lbl" x="206" y="128">gas bag</text>';}
+ else if(type==='poses'){for(var i=0;i<=4;i++){b+='<path class="thin" d="M'+(120+i*35)+' 24 V124 M120 '+(24+i*25)+' H260" opacity=".5"/>';}
+  b+=cloud(190,84,.8)+'<rect class="box" x="24" y="112" width="30" height="16" rx="3"/><text class="lbl" x="10" y="144">pose 1</text><path class="laser" d="M54 116 L260 30 M54 118 L260 80 M54 120 L230 124" stroke-width="1.3"/><rect class="box" x="266" y="12" width="30" height="16" rx="3"/><text class="lbl" x="262" y="44">pose 2</text><path class="laser" d="M266 22 L120 120 M266 20 L120 60 M266 18 L160 24" stroke-width="1.3"/>';}
+ else if(type==='rose'){b='<circle class="box" cx="150" cy="74" r="56"/><path class="laser" d="'+rose(150,74,50)+'" stroke-width="1.3"/><text class="lbl" x="214" y="40">beam path on the target</text><text class="lbl" x="214" y="56">(wedges rotate;</text><text class="lbl" x="214" y="70">sensor head fixed)</text>';}
+ else if(type==='fixed'){b='<rect class="box" x="16" y="62" width="30" height="18" rx="3"/><path class="thin" d="M46 66 L250 24 M46 76 L250 128"/><text class="lbl" x="8" y="100">fixed camera</text><rect class="box" x="236" y="72" width="26" height="44" rx="8"/>'+cloud(268,66,.6)+'<path class="ln" d="M206 96 l6 6 m0 -6 l-6 6 M176 112 l6 6 m0 -6 l-6 6"/><text class="lbl" x="120" y="142">x = possible sensor drop points</text>';}
+ return '<svg class="fig" viewBox="0 0 300 150" role="img" aria-label="Scan path: '+esc(type)+'">'+b+'</svg>';}
+function systemHTML(p){var s=p.system;if(!s)return '';
+ var nParts=0;var plats=s.platforms.map(function(pl){nParts+=pl.parts.length;
+  return '<div class="plat'+(pl.sensor?' has':'')+'"><div class="plat-h">'+esc(pl.name)+(pl.sensor?' <span class="tag">sensor here</span>':'')+'</div><ul>'+pl.parts.map(function(pt){var isS=pt.charAt(0)==='*';return '<li'+(isS?' class="s"':'')+'>'+esc(isS?pt.slice(1):pt)+'</li>';}).join('')+'</ul></div>';}).join('');
+ return '<h5>Scan path</h5>'+scanSVG(s.scan.type)+'<p class="scandesc">'+esc(s.scan.desc)+'</p>'+
+  '<h5>Hardware: '+s.platforms.length+' unit'+(s.platforms.length>1?'s':'')+', '+nParts+' main parts</h5><p class="scandesc">'+esc(s.mount)+'</p><div class="plats">'+plats+'</div>'+
+  '<h5>Data flow</h5><ol class="flow">'+s.flow.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ol>';}
+
+var GROUPS=[
+{id:'mech',name:'One beam, moved mechanically',sub:'A pan-tilt unit, robot or drone points a single laser line.'},
+{id:'optics',name:'One beam, steered by optics',sub:'Spinning wedges bend the beam while the sensor head stays still.'},
+{id:'patterns',name:'One detector, many patterns',sub:'Masks code the scene; one photodiode and math rebuild the image.'},
+{id:'array',name:'Detector array',sub:'A camera captures every pixel at once.'}];
+var COLS=[['technique','How it measures'],['illum','Built-in light source'],['specref','Spectral reference'],['output','Output form'],['gas','Gas'],['scenario','Where tested'],['range','Range / sensitivity'],['validation','Validation'],['data','Public data'],['takeaway','Takeaway for us']];
+
+function axisHTML(){return '<div class="axis">'+GROUPS.map(function(g){
+ var chips=state.papers.filter(function(p){return p.group===g.id;}).map(function(p){return '<a class="chip" href="#'+p.id+'">'+esc(p.short)+'</a>';}).join('');
+ if(g.id==='patterns')chips='<span class="chip ours">Our SPC</span>'+chips;
+ if(g.id==='mech')chips='<span class="chip ours">Our pan/tilt pointing (to confirm)</span>'+chips;
+ return '<div class="stop"><div class="dot"></div><h3>'+esc(g.name)+'</h3><p>'+esc(g.sub)+'</p><div class="chips">'+chips+'</div></div>';}).join('')+'</div>';}
+
+function unitsHTML(){return '<section class="block" id="units"><h2>Three numbers that sound alike</h2><p>Every paper reports at least one of these, and they answer different questions.</p><div class="units">'+
+'<div class="unit"><div class="glyph">ppm</div><h3>Concentration at one point</h3><p>How much methane is in the air right where a probe sits. Handheld detectors and EPA Method 21 use it; leak definitions are often 500 ppm.</p><p class="eg">Says nothing about how big the leak is.</p></div>'+
+'<div class="unit"><div class="glyph">ppm·m</div><h3>Methane along a beam</h3><p>What every laser and remote sensor here measures: concentration added up along the light path.</p><p class="eg">500 ppm over 1 m and 100 ppm over 5 m both read 500 ppm·m (Wang X. et al. 2026).</p></div>'+
+'<div class="unit"><div class="glyph">g/h</div><h3>Emission rate</h3><p>How much methane leaves the source per unit time. This is what "how big" means. 1 L/min ≈ 0.011 g/s ≈ 40 g/h.</p><p class="eg">DOI orphaned-well guidelines require detecting 1 g/h.</p></div></div>'+
+'<div class="callout"><p><strong>Our note:</strong> regulations often cite 500 ppm, but a ppm reading gives no clarity on how long the leak has been going or how big it is.</p><p>Size needs a rate: <span class="formula">Q ≈ u · ∫ ⟨C⟩ dy</span>, wind speed times ppm·m summed across a slice of the plume (Wang X. et al. 2026, Eq. 5). Duration needs the same spot measured again over time; no single snapshot provides it.</p></div></section>';}
+
+function tableHTML(){var head='<tr><th scope="col">Paper</th>'+COLS.map(function(c){return '<th scope="col">'+c[1]+'</th>';}).join('')+'</tr>';
+ var rows=state.papers.map(function(p){return '<tr><th scope="row"><a href="#'+p.id+'">'+esc(p.short)+'</a></th>'+COLS.map(function(c){return '<td contenteditable="true" spellcheck="true" data-pid="'+p.id+'" data-field="'+c[0]+'">'+esc(p[c[0]])+'</td>';}).join('')+'</tr>';}).join('');
+ return '<section class="block" id="compare"><h2>Side by side</h2><p>Click any cell to edit it. Copy the table to paste into Excel, Sheets or a slide.</p><div class="tools"><button type="button" id="copyTsv">Copy table</button><span class="hint" id="copyMsg" aria-live="polite"></span></div><div class="tablewrap"><table><thead>'+head+'</thead><tbody>'+rows+'</tbody></table></div></section>';}
+
+function patternsHTML(){var items=[
+['Control the background','A remote absorption reading mixes methane with background brightness. Gibson switches the laser on and off the absorption line; Wang X. locks the wavelength with a reference cell and images against a white screen.','Gibson 2017; Wang X. 2026'],
+['Correct for scan timing','Each reading takes time while the beam keeps moving, so the recorded angle lags the true one: 0.46° at 18°/s in Wang X. 2026. The lag reverses on alternate rows and must be corrected.','Wang X. 2026'],
+['Scan fast, then slow down','Screen the whole view quickly; once methane appears, switch to slow, dense scanning of that region. A ready-made baseline for our scan policy, beside the fixed zig-zag of Jia 2024.','Wang X. 2026; Jia 2024'],
+['Leak rate needs wind','Every paper that reports g/h or L/min combines the methane map with wind speed, measured or simulated. Without wind we can locate a leak but not size it.','Wang X. 2026; Wang S. 2025']];
+ return '<section class="block" id="patterns"><h2>What repeats across the papers</h2><p>Four lessons that show up in more than one system and map onto our open questions.</p><div class="patterns">'+items.map(function(i){return '<div><h3>'+i[0]+'</h3><p>'+i[1]+'</p><p class="src">'+i[2]+'</p></div>';}).join('')+'</div></section>';}
+
+function paperHTML(p){var fig=systemHTML(p);
+ var link=p.link?'<a href="'+esc(p.link)+'" target="_blank" rel="noopener">'+esc(p.title)+'</a>':esc(p.title);
+ var data=p.dataLink?' Data: <a href="'+esc(p.dataLink)+'" target="_blank" rel="noopener">repository</a>.':'';
+ var nums=(p.nums||[]).map(function(n){return '<dt>'+esc(n[0])+'</dt><dd>'+esc(n[1])+'</dd>';}).join('');
+ return '<article class="paper" id="'+p.id+'"><figure class="plate">'+fig+'<figcaption>Simplified from each paper\'s description.</figcaption></figure><div><h3>'+esc(p.short)+'</h3><p class="cite">'+link+'. '+esc(p.venue)+'.'+data+'</p>'+
+ '<p class="how" contenteditable="true" data-pid="'+p.id+'" data-field="how">'+esc(p.how)+'</p>'+(nums?'<dl class="nums">'+nums+'</dl>':'')+
+ '<h4>What it means for our project</h4><p class="rel" contenteditable="true" data-pid="'+p.id+'" data-field="relevance">'+esc(p.relevance)+'</p>'+
+ '<h4>Notes</h4><div class="notes" contenteditable="true" data-pid="'+p.id+'" data-field="notes" data-placeholder="Add questions, page numbers or follow-ups">'+esc(p.notes)+'</div>'+
+ (p.verify?'<p class="flag">Some details here have not yet been checked against the original paper.</p>':'')+'</div></article>';}
+
+function render(){
+ document.getElementById('app').innerHTML='<div class="wrap"><header class="top"><h1>How each system turns laser light into a picture of methane</h1><p class="lede">Nine papers behind our single-pixel methane sensor, sorted by how they get spatial information from a single measurement. Text in the table, the explanations and the notes is editable.</p><p class="status" id="status">'+esc(localNote)+'</p>'+axisHTML()+'</header>'+unitsHTML()+tableHTML()+patternsHTML()+
+ '<section class="block" id="papers"><h2>Each system up close</h2><p>Sketch, how it works, key numbers, and what it means for our sensor.</p>'+state.papers.map(paperHTML).join('')+'</section>'+
+ '<footer>Scan paths and hardware lists are simplified from each paper\'s text, not reproductions of the papers\' figures. Items marked for checking come from abstracts or other papers\' summaries.</footer></div>'+
+ '<div class="savebar" id="savebar" role="region" aria-label="Unsaved edits"><div class="in"><span id="saveMsg">You have unsaved edits.</span><button type="button" id="discard">Discard</button><button type="button" class="primary" id="save">Save changes</button></div></div>';
+ bind();}
+
+function setStatus(t){var s=document.getElementById('status');if(s)s.textContent=t;}
+function setDirty(v){dirty=v;var b=document.getElementById('savebar');if(b)b.classList.toggle('on',v);
+ var m=document.getElementById('saveMsg');if(m)m.textContent=artifactNs?'You have unsaved edits. Saving updates this page for everyone who can open it.':'You have unsaved edits. They will be saved in this browser only.';}
+
+function tsv(){var clean=function(s){return String(s||'').replace(/[\t\r\n]+/g,' ');};
+ var lines=[['Paper'].concat(COLS.map(function(c){return c[1];})).join('\t')];
+ state.papers.forEach(function(p){lines.push([p.short].concat(COLS.map(function(c){return clean(p[c[0]]);})).join('\t'));});return lines.join('\n');}
+
+function buildDoc(){var css=document.getElementById('css').textContent,js=document.getElementById('main').textContent;
+ var json=JSON.stringify(state).replace(/</g,'\\u003c');
+ return '<!DOCTYPE html>\n<html lang="en">\n<head>'+HEAD+'<style id="css">'+css+'</style></head><body><div id="app"></div><script type="application/json" id="state">'+json+'</scr'+'ipt><script id="main">'+js+'</scr'+'ipt></body></html>';}
+
+function saveLocal(){try{localStorage.setItem(KEY,JSON.stringify(state));return true;}catch(e){return false;}}
+
+function bind(){
+ document.getElementById('copyTsv').addEventListener('click',function(){var t=tsv(),msg=document.getElementById('copyMsg');
+  var done=function(){msg.textContent='Copied. Paste into a spreadsheet first, then into your slide.';};
+  if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(t).then(done,function(){fallback(t);done();});}else{fallback(t);done();}});
+ document.getElementById('save').addEventListener('click',save);
+ document.getElementById('discard').addEventListener('click',function(){state=JSON.parse(saved);setDirty(false);render();setStatus('Edits discarded.');});
+}
+function fallback(t){var ta=document.createElement('textarea');ta.value=t;ta.style.position='fixed';ta.style.opacity='0';document.body.appendChild(ta);ta.select();try{document.execCommand('copy');}catch(e){}document.body.removeChild(ta);}
+
+function save(){state.savedAt=Date.now();var btn=document.getElementById('save');
+ if(artifactNs){btn.disabled=true;document.getElementById('saveMsg').textContent='Saving…';
+  artifactNs.publish(buildDoc()).then(function(){saved=JSON.stringify(state);setDirty(false);setStatus('Saved.');},function(err){btn.disabled=false;var code=err&&err.code;
+   if(code==='conflict'){setStatus('Someone saved a newer version first; the page is reloading to it.');}
+   else{var ok=saveLocal();setDirty(false);setStatus(code==='not_granted'||code==='not_writer'?'This page is view-only for you. '+(ok?'Your edits were saved in this browser instead.':''):'Could not save to the page'+(code?' ('+code+')':'')+'. '+(ok?'Your edits were saved in this browser instead.':''));}});}
+ else{var ok=saveLocal();saved=JSON.stringify(state);setDirty(false);setStatus(ok?'Saved in this browser.':'Could not save: browser storage is unavailable here.');}}
+
+document.addEventListener('input',function(e){var t=e.target.closest&&e.target.closest('[data-field]');if(!t)return;
+ var p=state.papers.filter(function(x){return x.id===t.dataset.pid;})[0];if(!p)return;p[t.dataset.field]=t.innerText.replace(/\n+$/,'');setDirty(true);});
+document.addEventListener('paste',function(e){var t=e.target.closest&&e.target.closest('[contenteditable]');if(!t)return;e.preventDefault();
+ var text=(e.clipboardData||window.clipboardData).getData('text/plain');try{document.execCommand('insertText',false,text);}catch(err){}});
+window.addEventListener('beforeunload',function(e){if(dirty){e.preventDefault();e.returnValue='';}});
+
+render();
+if(window.claude&&typeof window.claude.use==='function'){window.claude.use('artifact').then(function(ns){artifactNs=ns||null;if(dirty)setDirty(true);},function(){});}
+})();
+</script></body></html>
